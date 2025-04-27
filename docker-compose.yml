@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  web:
+    build: .
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - PYTHONUNBUFFERED=1
+    networks:
+      - app-network
+
+  db:
+    image: postgres:17
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=e-commerce
+      - POSTGRES_PASSWORD=e-commerce
+      - POSTGRES_DB=e-commerce
+    networks:
+      - app-network
+
+# Volumes
+volumes:
+  postgres_data:
+
+# Networks
+networks:
+  app-network:
+    driver: bridge

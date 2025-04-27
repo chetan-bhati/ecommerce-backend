@@ -1,18 +1,14 @@
-from rest_framework import generics
+from rest_framework import generics, viewsets
 from store.models import Category, Product
 from store.serializers import CategorySerializer, ProductSerializer
 
-class CategoryListView(generics.ListAPIView):
+class CategoryView(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    lookup_field = 'id'
 
 
-class ProductListCreateView(generics.ListCreateAPIView):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
-
-
-class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
+class ProductView(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_field = 'id'
